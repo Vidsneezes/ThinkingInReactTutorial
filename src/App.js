@@ -48,12 +48,35 @@ class ProductTable extends Component{
 }
 
 class SearchBar extends Component{
+  constructor(props){
+    super(props);
+    this.handleFilterTextInputChange = this.handleFilterTextInputChange.bind(this);
+    this.handleInStockInputChange = this.handleInStockInputChange.bind(this);
+  }
+
+  handleFilterTextInputChange(e){
+    this.props.onFilterTextInput(e.target.value);
+  }
+
+  handleInStockInputChange(e){
+    this.props.onInStockInput(e.target.checked);
+  }
+
   render(){
     return (
       <form>
-        <input type="text" placeholder="Search..." value={this.props.filterText}/>
+        <input 
+          type="text" 
+          placeholder="Search..." 
+          value={this.props.filterText}
+          onChange={this.handleFilterTextInputChange}
+          />
         <p>
-          <input type="checkbox" checked={this.props.inStockOnly}/>
+          <input 
+            type="checkbox" 
+            checked={this.props.inStockOnly}
+            onChange={this.props.handleInStockInputChange}
+            />
           {' '}
           Only show products in stock
         </p>
@@ -69,7 +92,22 @@ class FilterableProductTable extends Component {
       filterText: '',
       inStockOnly: false
     };
+
+    this.handleFilterTextInputChange = this.handleFilterTextInputChange.bind(this);
+    this.handleInStockInputChange = this.handleInStockInputChange.bind(this);
   }
+
+  handleFilterTextInputChange(filterText){
+    this.setState({
+      filterText: filterText
+    });
+  }
+
+ handleInStockInputChange(inStockOnly){
+   this.setState({
+     inStockOnly: inStockOnly
+   });
+ }
 
   render() {
     return (
@@ -77,6 +115,8 @@ class FilterableProductTable extends Component {
         <SearchBar 
           filterText = {this.state.filterText}
           inStockOnly = {this.state.inStockOnly}
+          onFilterTextInput={this.handleFilterTextInputChange}
+          onInStockInput={this.handleInStockInputChange}
         />
         <ProductTable 
           products={this.props.products}
