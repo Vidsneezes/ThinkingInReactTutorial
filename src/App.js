@@ -22,7 +22,6 @@ class ProductTable extends Component{
   render(){
     var rows = [];
     var lastCategory = null;
-    console.log(this.props.inStockOnly)
     this.props.products.forEach((product) =>{
       if(product.name.indexOf(this.props.filterText) === -1 || (!product.stocked && this.props.inStockOnly)){
         return;
@@ -75,7 +74,7 @@ class SearchBar extends Component{
           <input 
             type="checkbox" 
             checked={this.props.inStockOnly}
-            onChange={this.props.handleInStockInputChange}
+            onChange={this.handleInStockInputChange}
             />
           {' '}
           Only show products in stock
@@ -103,11 +102,11 @@ class FilterableProductTable extends Component {
     });
   }
 
- handleInStockInputChange(inStockOnly){
-   this.setState({
-     inStockOnly: inStockOnly
-   });
- }
+  handleInStockInputChange(inStockOnly){
+    this.setState({
+      inStockOnly: inStockOnly
+    });
+  }
 
   render() {
     return (
