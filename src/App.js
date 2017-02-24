@@ -22,10 +22,13 @@ class ProductTable extends Component{
   render(){
     var rows = [];
     var lastCategory = null;
-    this.props.products.forEach(function(product){
+    console.log(this.props.inStockOnly)
+    this.props.products.forEach((product) =>{
+      if(product.name.indexOf(this.props.filterText) === -1 || (!product.stocked && this.props.inStockOnly)){
+        return;
+      }
       if(product.category !== lastCategory){
         rows.push(<ProductCategoryRow category={product.category} key={product.category}/>);
-    
       }
       rows.push(<ProductRow product={product} key={product.name}/>);
       lastCategory = product.category;
@@ -33,8 +36,10 @@ class ProductTable extends Component{
     return (
       <table>
         <thead>
-          <th>Name</th>
-          <th>Price</th>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
         </thead>
         <tbody>{rows}</tbody>
       </table>
@@ -46,9 +51,9 @@ class SearchBar extends Component{
   render(){
     return (
       <form>
-        <input type="text" placeholder="Search..." />
+        <input type="text" placeholder="Search..." value={this.props.filterText}/>
         <p>
-          <input type="checkbox" />
+          <input type="checkbox" checked={this.props.inStockOnly}/>
           {' '}
           Only show products in stock
         </p>
